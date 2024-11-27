@@ -12,6 +12,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->alias([
+            'Token' => \App\Http\Middleware\TokenMiddleWare::class,
+            'Admin'=>\App\Http\Middleware\AdminsMiddleWare::class,
+        ]);
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {

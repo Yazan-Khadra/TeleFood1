@@ -23,6 +23,7 @@ Route::controller(UserController::class)->group(function(){
 });
     Route::controller(StoreController::class)->group(function(){
         Route::post('store/create','Create')->middleware(['Token','Admin']);
+        Route::post('store/addbranch','AddBranch')->middleware(['Token','Admin']);
         Route::get('stores/get','Index');
         Route::get('store/products/{id}','GetStoreProducts');
        

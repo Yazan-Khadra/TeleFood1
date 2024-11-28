@@ -18,6 +18,7 @@ class StoreResource extends JsonResource
         $i=0;
         foreach($this->Location as $location){
             $locations[$i]=['governorate'=>$location->Governorate->name,'location'=>$location->location];
+            $i++;
         }
         return [
             'store_id'=>$this->id,

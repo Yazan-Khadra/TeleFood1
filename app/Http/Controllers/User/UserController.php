@@ -4,13 +4,12 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Traits\JsonResponseTrait;
-use App\Traits\Auth\SetTTLTrait;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends Controller{
-    use JsonResponseTrait,SetTTLTrait;
+    use JsonResponseTrait;
     public function getUserInfo()
     {
         

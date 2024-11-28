@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name');
-            $table->string('descriprion');
+            $table->string('description');
             $table->string('image_url');
             $table->string('price');
             $table->foreignId('store_id')->references('id')->on('stores')->cascadeOnDelete();

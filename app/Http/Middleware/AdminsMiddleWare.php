@@ -7,6 +7,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AdminsMiddleWare
 {
@@ -18,8 +19,9 @@ class AdminsMiddleWare
      */
     public function handle(Request $request, Closure $next): Response
     {
+        $user=JWTAuth::parsetoken()->authenticate();
         
-        if(!Auth::user()->role=="admin"){
+        if(Auth::user()->role!='admin'){
             return $this->JsonResponse('only admin can access',401);
     }
     return $next($request);

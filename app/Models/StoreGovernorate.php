@@ -13,7 +13,7 @@ class StoreGovernorate extends Model{
     public function Store(){
         return $this->belongsTo(Store::class,'store_id');
     }
-    public function Govenorate(){
+    public function Governorate(){
         return $this->belongsTo(Governorate::class,'governorate_id');
         
     }

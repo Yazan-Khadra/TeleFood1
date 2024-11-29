@@ -18,8 +18,7 @@ return new class extends Migration
             $table->string('description');
             $table->string('image_url');
             $table->string('rate');
-            //$table->foreignId('category_id')->references('id')->on('categories');
-          
+            $table->foreignId('category_id')->references('id')->on('categories');
         });
     }
 

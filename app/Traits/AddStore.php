@@ -7,6 +7,8 @@ use App\Http\Controllers\StoreGovernorateController;
 use App\Models\Category;
 use App\Models\Store;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+
 trait AddStore{
     public function AddStore(Request $request,$StoreIdForAddingBranch=null){
         $category_id=Category::where('type',$request->category)->get()->first();
@@ -20,9 +22,13 @@ trait AddStore{
         ]);
         $StoreIdForAddingBranch=$store->id;
     }
+    $gov_id=Cache::get($request->governorate);
+    if( $gov_id==null){
          $Governorate=new GovernorateController($request->governorate);
          $Governorate->Create();
          $gov_id=$Governorate->GetGovId();
-        $Createlocation=new StoreGovernorateController($StoreIdForAddingBranch,$gov_id,$request->location);
     }
+  
+    $Createlocation=new StoreGovernorateController($StoreIdForAddingBranch,$gov_id,$request->location);
+  }
 }

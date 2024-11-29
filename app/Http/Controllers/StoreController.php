@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\Store\ProductResource;
 use App\Http\Resources\Store\StoreResource;
 use App\Models\Category;
+use App\Models\Governorate;
 use App\Models\Store;
 use App\Models\StoreGovernorate;
 use App\Traits\AddStore;
@@ -21,7 +22,7 @@ class StoreController extends Controller{
             'description'=>'required|string',
             'image_url'=>'required|string',
             'rate'=>'required',
-            'governorate'=>'required|string|unique:governorates,name',
+            'governorate'=>'required|string',
             'location'=>'required|string',
             'category'=>'required|string',
         ]);
@@ -44,6 +45,15 @@ class StoreController extends Controller{
         $this->AddStore($request,$request->store_id);
         return $this->JsonResponse('Branch Added Successfully',201);
     }
+    public function Delete(request $request){
+        Store::where('id',$request->store_id)->delete();
+        return $this->JsonResponse('Deleted Successfully',200);
+    }
+    public function DeleteBranch(Request $request){
+        StoreGovernorate::where('store_id',$request->store_id)->where('governorate_id',$request->governorate_id)->delete();
+        return $this->JsonResponse('Branch Deleted Successfully',200);
+
+    }
     public function Index(){
         $stores=Store::all();
         return StoreResource::collection($stores);
@@ -60,4 +70,10 @@ class StoreController extends Controller{
         return ProductResource::collection($products);
         
     }
+    public function GetGovernorateStores($id){
+        $governorate=Governorate::find($id);
+        $stores=$governorate->Stores;
+        return StoreResource::collection($stores);
+    }
+
 }

@@ -18,7 +18,7 @@ class Store extends Model{
         return $this->hasMany(Product::class);
     }
     //when you create categories table please uncomment this method
-    // public function Category(){
-    //     return $this->belongsTo(Category::class);
-    // }
+    public function Category(){
+        return $this->belongsTo(Category::class);
+    }
 }

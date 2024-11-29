@@ -15,4 +15,7 @@ class Product extends Model{
     public function Store(){
         return $this->belongsto(Store::class);
     }
+    public function products(){
+        return $this->belongToMany(User::class,'favorites');
+    }
 }

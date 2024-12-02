@@ -18,6 +18,7 @@ class ProductController extends Controller{
             'description'=>'required|string',
             'image_url'=>'required|string',
             'price'=>'required|numeric',
+            'quantity'=>'required|numeric'
         ]);
         if($validation->fails()){
             return $this->JsonResponse($validation->errors(),400);
@@ -29,11 +30,50 @@ class ProductController extends Controller{
             'price'=>$request->price,
             'image_url'=>$request->image_url,
             'store_id'=>$store_id->id,
+            'quantity'=>$request->quantity,
         ]);
         return $this->JsonResponse("Product added Successfully",200);
     }
-    public function Index($id){
-
-
+  public function Update(Request $request){
+    $validation=Validator::make($request->all(),[
+        'store_name'=>'required|string',
+        'name'=>'required|string',
+        'description'=>'required|string',
+        'image_url'=>'required|string',
+        'price'=>'required|numeric',
+        'quantity'=>'required|numeric'
+    ]);
+    if($validation->fails()){
+        return $this->JsonResponse($validation->errors(),400);
     }
+    Product::where('id',$request->product_id)->update([
+        'name'=>$request->name,
+        'description'=>$request->description,
+        'price'=>$request->price,
+        'image_url'=>$request->image_url,
+        'quantity'=>$request->quantity,
+    ]);
+        return $this->JsonResponse("Product updated Successfully",202);
+
+  }
+  public function Delete($id){
+    Product::where("id",$id)->delete();
+    return $this->JsonResponse("Product Deleted Successfully",200);
+  }
+  public function DeleteAllForStore($id){
+   $store= Store::where('id',$id)->get()->first();
+   $products=$store->Products;
+   foreach($products as $product){
+    Product::where('id',$product->id)->delete();
+   }
+   return $this->JsonResponse('Deleted Successfully',200);
+  }
+  public function UpdateQuantity(request $request){
+   $product=Product::find($request->id);
+   $new_quantity = $product->quantity + $request->quantity;
+   $product->update([
+    "quantity"=>$new_quantity,
+   ]);
+  }
+
 }

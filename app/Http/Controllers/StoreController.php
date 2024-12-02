@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\Store\ProductResource;
 use App\Http\Resources\Store\StoreResource;
-use App\Models\Category;
+
 use App\Models\Governorate;
 use App\Models\Store;
 use App\Models\StoreGovernorate;
 use App\Traits\AddStore;
 use App\Traits\JsonResponseTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class StoreController extends Controller{
@@ -45,14 +46,34 @@ class StoreController extends Controller{
         $this->AddStore($request,$request->store_id);
         return $this->JsonResponse('Branch Added Successfully',201);
     }
-    public function Delete(request $request){
-        Store::where('id',$request->store_id)->delete();
+    public function Update(request $request){
+        $validation=Validator::make($request->all(),[
+            'name'=>'required|string|unique:stores',
+            'description'=>'required|string',
+            'image_url'=>'required|string',
+            'rate'=>'required',
+            'governorate'=>'required|string',
+            'location'=>'required|string',
+            'category'=>'required|string',
+        ]);
+        if($validation->fails()){
+            return $this->JsonResponse($validation->errors(),400);
+        }
+    }
+   
+
+    public function DeleteStore($id){
+        Store::find($id)->delete();
         return $this->JsonResponse('Deleted Successfully',200);
     }
     public function DeleteBranch(Request $request){
         StoreGovernorate::where('store_id',$request->store_id)->where('governorate_id',$request->governorate_id)->delete();
         return $this->JsonResponse('Branch Deleted Successfully',200);
 
+    }
+    public function DeleteAll(){
+        DB::table('stores')->delete();
+        return $this->JsonResponse('All Stores Deleted Successfully',200);
     }
     public function Index(){
         $stores=Store::all();
@@ -65,7 +86,6 @@ class StoreController extends Controller{
             return response()->json(['message'=>'Empty']);
         }
         $products=$store->Products;
-       
        
         return ProductResource::collection($products);
         

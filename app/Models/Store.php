@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Store extends Model{
+    use Searchable;
     protected $fillable=[
         'name',
         'description',
@@ -22,4 +24,5 @@ class Store extends Model{
     public function Category(){
         return $this->belongsTo(Category::class);
     }
+   
 }

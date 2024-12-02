@@ -31,4 +31,15 @@ trait AddStore{
   
     $Createlocation=new StoreGovernorateController($StoreIdForAddingBranch,$gov_id,$request->location);
   }
+  public function UpdateStore(request $request){
+    $category_id=Category::where('type',$request->category)->get()->first();
+    $store= Store::where('id',$request->store_id)->update([
+        'name'=>$request->name,
+        'description'=>$request->description,
+        'image_url'=>$request->image_url,
+        'rate'=>$request->rate,
+        'category_id'=>$category_id->id,
+    ]);
+   
+  }
 }

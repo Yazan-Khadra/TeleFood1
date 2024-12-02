@@ -10,9 +10,13 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "algolia/algoliasearch-client-php": "^4.9",
+        "http-interop/http-factory-guzzle": "^1.2",
         "laravel/framework": "^11.31",
         "laravel/sanctum": "^4.0",
+        "laravel/scout": "^10.11",
         "laravel/tinker": "^2.9",
+        "meilisearch/meilisearch-php": "^1.11",
         "predis/predis": "^2.3",
         "tymon/jwt-auth": "^2.1"
     },

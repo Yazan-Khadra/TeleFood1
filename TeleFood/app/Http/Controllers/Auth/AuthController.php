@@ -29,7 +29,7 @@ class AuthController extends Controller{
         'confirm_password'=>'required|same:password'
 
        ]);
-       
+
        $image_url="https://w7.pngwing.com/pngs/577/307/png-transparent-human-with-circle-logo-national-cyber-security-alliance-organization-drupal-association-information-internet-icon-s-customers-free-miscellaneous-company-logo.png";
        if($validation->fails()){
         return $this->JsonResponse($validation->errors(),400);
@@ -37,8 +37,8 @@ class AuthController extends Controller{
        if(isset($request->image_url)){
         $image_url=$request->image_url;
        }
-    
-       
+
+
        User::create([
         'first_name'=>$request->first_name,
         'last_name'=>$request->last_name,
@@ -68,24 +68,24 @@ class AuthController extends Controller{
     }
     $user=Auth::user();
     $token = JWTAuth::claims(['first_name'=>$user->first_name,'last_name'=>$user->last_name,'location'=>$user->location,'role' => $user->role])->fromUser($user);
-   
+
 }
 catch (JWTException $e) {
-    
+
     return $this->JsonResponse('invalid token',400);
         }
         $response=['message'=>'Welcome '.Auth::user()->first_name,'token'=>$token,'status'=>200];
     return response()->json($response,200);
     }
-   
+
 public function Logout(){
     JWTAuth::invalidate(JWTAuth::getToken());
         return $this->JsonResponse('logout successfully',200);
     }
     public function Refresh(){
       /** @var Illuminate\Auth\AuthManger*/;
-     
-      
+
+
     }
     public function CreateNewToken($token){
         return response()->json([

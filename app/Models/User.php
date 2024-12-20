@@ -63,7 +63,7 @@ class User extends Authenticatable implements JWTSubject
     public function baskets(){
         return $this->hasMany(Basket::class);
     }
-    public function favorites(){
-        return $this->hasMany(Favorite::class);
+    public function products(){
+        return $this->belongsToMany(Product::class,'favorites');
     }
 }

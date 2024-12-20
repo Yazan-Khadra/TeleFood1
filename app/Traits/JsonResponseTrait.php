@@ -8,5 +8,12 @@ trait JsonResponseTrait
         $response=['message'=>$message,'status'=>$status];
         return response()->json($response,$status);
     }
+    public function JsonResponseShow($data,$message,$status){
+        $response=['data'=>$data,
+                   'message'=>$message,
+                   'status'=>$status ];
+        return response($response);
+    }
+
 }
 

@@ -12,12 +12,13 @@ class Basket extends Model
         'size',
         'description',
         'quantity',
-        'total_price'
+        'total_price',
+        'location'
     ];
     public function products(){
-        return $this->belongToMany(Product::class);
+        return $this->belongsTo(Product::class);
     }
     public function users(){
-        return $this->belongToMany(User::class);
+        return $this->belongsTo(User::class);
     }
 }

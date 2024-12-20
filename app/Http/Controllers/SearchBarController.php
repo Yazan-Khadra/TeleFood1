@@ -11,12 +11,12 @@ use Illuminate\Http\Request;
 
 class SearchBarController extends Controller{
     use JsonResponseTrait;
-    public function Search(request $request){
-       $info=Store::where('name',$request->name)->get()->first();
+    public function Search($name){
+       $info=Store::where('name',$name)->get()->first();
        if(isset($info)){
        return StoreResource::make($info);
        }
-       $info=Product::where('name',$request->name)->first();
+       $info=Product::where('name',$name)->first();
        if(isset($info)){
         return ProductResource::make($info);
         }

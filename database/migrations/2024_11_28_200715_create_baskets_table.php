@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('description');
             $table->string('quantity');
             $table->string('total_price');
+            $table->string('location');
             $table->foreignId('user_id')->constrained('users')->references('id')->cascadeOnDelete();
             $table->foreignId('product_id')->constrained('products')->references('id')->cascadeOnDelete();
             $table->timestamps();

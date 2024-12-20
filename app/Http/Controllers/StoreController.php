@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\Store\ProductResource;
 use App\Http\Resources\Store\StoreResource;
-
+use App\Models\Category;
 use App\Models\Governorate;
 use App\Models\Store;
 use App\Models\StoreGovernorate;
@@ -36,34 +36,22 @@ class StoreController extends Controller{
     }
     public function AddBranch(Request $request){
         $validation=Validator::make($request->all(),[
-            'store_id'=>'required',
-            'governorate'=>'required|string|unique:governorates,name',
-            'location'=>'required|string',
-        ]);
-        if($validation->fails()){
-            return $this->JsonResponse($validation->errors(),400);
-        }
-        $this->AddStore($request,$request->store_id);
-        return $this->JsonResponse('Branch Added Successfully',201);
-    }
-    public function Update(request $request){
-        $validation=Validator::make($request->all(),[
-            'name'=>'required|string|unique:stores',
-            'description'=>'required|string',
-            'image_url'=>'required|string',
-            'rate'=>'required',
+            'store_name'=>'required',
             'governorate'=>'required|string',
             'location'=>'required|string',
-            'category'=>'required|string',
         ]);
         if($validation->fails()){
             return $this->JsonResponse($validation->errors(),400);
         }
+       $this->AddingBranch($request,$request->store_name);
+        return $this->JsonResponse('Branch Added Successfully',201);
     }
-   
-
-    public function DeleteStore($id){
-        Store::find($id)->delete();
+    public function Delete($storeName){
+        Store::where('name',$storeName)->delete();
+        return $this->JsonResponse('Deleted Successfully',200);
+    }
+    public function DeleteAll(){
+        DB::table('stores')->delete();
         return $this->JsonResponse('Deleted Successfully',200);
     }
     public function DeleteBranch(Request $request){
@@ -71,27 +59,22 @@ class StoreController extends Controller{
         return $this->JsonResponse('Branch Deleted Successfully',200);
 
     }
-    public function DeleteAll(){
-        DB::table('stores')->delete();
-        return $this->JsonResponse('All Stores Deleted Successfully',200);
-    }
     public function Index(){
         $stores=Store::all();
         return StoreResource::collection($stores);
     }
-    public function GetStoreProducts($id){
-        $store=Store::where('id',$id)->get()->first();
+    public function GetStoreProducts($name){
+        $store=Store::where('name',$name)->get()->first();
       
         if(!isset($store->Products)||empty($store->Products)){
             return response()->json(['message'=>'Empty']);
         }
         $products=$store->Products;
-       
         return ProductResource::collection($products);
         
     }
-    public function GetGovernorateStores($id){
-        $governorate=Governorate::find($id);
+    public function GetGovernorateStores($name){
+        $governorate=Governorate::where('name',$name)->get()->first();
         $stores=$governorate->Stores;
         return StoreResource::collection($stores);
     }

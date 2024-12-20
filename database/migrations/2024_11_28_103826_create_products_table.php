@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('description');
             $table->string('image_url');
             $table->string('price');
-            $table->string('quantity');
             $table->foreignId('store_id')->references('id')->on('stores')->cascadeOnDelete();
         });
     }

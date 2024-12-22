@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use Kreait\Firebase\Factory;
@@ -37,8 +38,7 @@ use Kreait\Firebase\Messaging\CloudMessage;
         $resturant = $product->Store;
         $title = 'New Product Added';
         $body = 'User '.$resturant->name.' '.' has added a new product'.$product->name;
-
-        $users = $this->userRepository->getAllUsersHasFcmToken();
+        $users = User::all();
 
         foreach ($users as $user) {
             $this->sendNotification($user->fcm_token, $title, $body, ['product_id' => $product->id]);

@@ -2,53 +2,37 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\Messaging\CloudMessage;
+use Kreait\Firebase\Messaging\Notification as FirebaseNotifications;
 
 class FirebaseNotification extends Notification
 {
-    use Queueable;
-
-    /**
-     * Create a new notification instance.
-     */
+    protected $messaging;
+    
+    // If you intend to use $userRepository later, you can define it as a constructor parameter
+    // protected $userRepository;
+    
     public function __construct()
     {
-        //
+        $firebase = (new Factory)
+            ->withServiceAccount(base_path(env('FIREBASE_CREDENTIALS')));
+
+        $this->messaging = $firebase->createMessaging();
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @return array<int, string>
-     */
-    public function via(object $notifiable): array
+    public function sendNotification($deviceToken, $title, $body, array $data = [])
     {
-        return ['firebase'];
-    }
+        // Corrected Firebase Notification instantiation
+        $notification = FirebaseNotifications::create($title, $body);
 
-    /**
-     * Get the mail representation of the notification.
-     */
-    public function toMail(object $notifiable): MailMessage
-    {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
-    }
+        // Prepare the CloudMessage with the target device token
+        $message = CloudMessage::withTarget('token', $deviceToken)
+            ->withNotification($notification)
+            ->withData($data);
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(object $notifiable): array
-    {
-        return [
-            //
-        ];
+        // Send the notification
+        return $this->messaging->send($message);
     }
 }

@@ -46,6 +46,7 @@ class AuthController extends Controller{
         'image_url'=>$image_url,
         'mobile'=>$request->mobile,
         'password'=>Hash::make($request->password),
+        'fcm_token'=> $request->fcmToken,
        ]);
     }
     catch(Exception $e){

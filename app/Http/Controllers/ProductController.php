@@ -6,15 +6,24 @@ use App\Http\Resources\Store\ProductResource;
 use App\Models\Product;
 use App\Models\Store;
 use App\Models\User;
+use App\Notifications\FirebaseNotification;
 use App\Traits\JsonResponseTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller{
     use JsonResponseTrait;
     public function Notify(Product $product){
-        $notifyUsers=new FcmController();
-        $notifyUsers->notifyUsers($product);
+        $title = 'New Product Added';
+        $body = 'Resturant '.$product->Store->name.' '.' has added a new product'.$product->name;
+
+        $users = User::all();
+        $notify=new FirebaseNotification();
+        foreach ($users as $user) {
+            $notify->sendNotification($user->fcm_token, $title, $body, ['product_id' => $product->id]);
+        }
+       
     }
     public function Create(Request $request){
         $validation=Validator::make($request->all(),[
@@ -35,7 +44,7 @@ class ProductController extends Controller{
             'image_url'=>$request->image_url,
             'store_id'=>$store_id->id,
         ]);
-        $this->Notify($product);
+         $this->Notify($product);
         // $this->f->notifyUsers($product);
         return $this->JsonResponse("Product added Successfully",200);
     }

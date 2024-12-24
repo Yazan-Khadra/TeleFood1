@@ -15,7 +15,7 @@ class BasketIndexResource extends JsonResource
     public function toArray(Request $request): array
     {
         $userProducts=$this->products;
-        return ['product_id'=>$userProducts->product_id,
+        return ['product_id'=>$userProducts->id,
                 'name'=>$userProducts->name,
                 'image_url'=>$userProducts->image_url,
                 'price'=>$userProducts->price,

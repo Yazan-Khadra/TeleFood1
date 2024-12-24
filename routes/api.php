@@ -26,7 +26,7 @@ Route::controller(UserController::class)->group(function(){
     });
 });
 Route::controller(BasketController::class)->group(function(){
-    Route::get('basket/index','ShowBasketProducts');
+    Route::get('basket/index','ShowBasketProducts')->middleware(['Token']);
     Route::post('basket/store','store')->middleware('Token');
     Route::post('basket/edit/{name}','edit')->middleware('Token');
     Route::delete('basket/delete/{name}','delete')->middleware('Token');

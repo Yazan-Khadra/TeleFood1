@@ -17,6 +17,10 @@ class BasketController extends Controller
     public function ShowBasketProducts(){
         $user=Auth::user();
         $userProducts=$user->baskets;
+       
+    //    foreach($userProducts->products as $userProduct){
+    //     dd($userProduct);
+    //    }
         if(!isset($userProducts)){
             return $this->JsonResponse('No products found in the basket',404);
         }

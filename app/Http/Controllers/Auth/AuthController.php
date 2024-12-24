@@ -23,7 +23,6 @@ class AuthController extends Controller{
         'first_name'=>'required|string',
         'last_name'=>'required|string',
         'location'=>'required|string',
-        'image_url'=>'string',
         'mobile'=>'required|min:10|max:10|unique:users',
         'password'=>'required|min:6|max:255',
         'confirm_password'=>'required|same:password'
@@ -34,8 +33,10 @@ class AuthController extends Controller{
        if($validation->fails()){
         return $this->JsonResponse($validation->errors(),400);
        }
-       if(isset($request->image_url)){
-        $image_url=$request->image_url;
+       if(isset($request->image)){
+        $image_url=$request->file("image")->getClientOriginalName();
+        $path=$request->file('image')->storeAs('UsersImage', $image_url,'TeleFood');
+       
        }
 
 
@@ -43,7 +44,7 @@ class AuthController extends Controller{
         'first_name'=>$request->first_name,
         'last_name'=>$request->last_name,
         'location'=>$request->location,
-        'image_url'=>$image_url,
+        'image_url'=>$path,
         'mobile'=>$request->mobile,
         'password'=>Hash::make($request->password),
         'fcm_token'=> $request->fcmToken,
@@ -65,7 +66,7 @@ class AuthController extends Controller{
     $credintials=$request->only('mobile','password');
     try{
     if(!$token=JWTAuth::attempt($credintials)){
-        return $this->JsonResponse('invalid credentials',401);
+        return $this->JsonResponse('invalid mobile number or password',401);
     }
     $user=Auth::user();
     $token = JWTAuth::claims(['first_name'=>$user->first_name,'last_name'=>$user->last_name,'location'=>$user->location,'role' => $user->role])->fromUser($user);

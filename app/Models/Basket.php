@@ -16,7 +16,7 @@ class Basket extends Model
         'location'
     ];
     public function products(){
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class,'product_id');
     }
     public function users(){
         return $this->belongsTo(User::class);

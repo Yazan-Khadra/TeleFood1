@@ -32,6 +32,7 @@ class ProductController extends Controller{
             'description'=>'required|string',
             'image_url'=>'required|string',
             'price'=>'required|numeric',
+            'quantity'=>'required',
         ]);
         if($validation->fails()){
             return $this->JsonResponse($validation->errors(),400);
@@ -43,8 +44,9 @@ class ProductController extends Controller{
             'price'=>$request->price,
             'image_url'=>$request->image_url,
             'store_id'=>$store_id->id,
+            'quantity'=>$request->quantity,
         ]);
-         $this->Notify($product);
+       //  $this->Notify($product);
         // $this->f->notifyUsers($product);
         return $this->JsonResponse("Product added Successfully",200);
     }

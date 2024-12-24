@@ -67,8 +67,5 @@ class User extends Authenticatable implements JWTSubject
     public function products(){
         return $this->belongsToMany(Product::class,'favorites');
     }
-    public function notificationTokens()
-    {
-        // return $this->hasMany(NotificationToken::class);
-    }
+  
 }

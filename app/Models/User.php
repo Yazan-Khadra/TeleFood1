@@ -24,6 +24,7 @@ class User extends Authenticatable implements JWTSubject
         'role',
         'image_url',
         'location',
+        'location_details',
         'mobile',
         'password',
         'fcmtoken',

@@ -23,6 +23,7 @@ class AuthController extends Controller{
         'first_name'=>'required|string',
         'last_name'=>'required|string',
         'location'=>'required|string',
+        'location_details'=>'required|string',
         'mobile'=>'required|min:10|max:10|unique:users',
         'password'=>'required|min:6|max:255',
         'confirm_password'=>'required|same:password'
@@ -44,6 +45,7 @@ class AuthController extends Controller{
         'first_name'=>$request->first_name,
         'last_name'=>$request->last_name,
         'location'=>$request->location,
+        'location_details'=>$request->location_details,
         'image_url'=>$path,
         'mobile'=>$request->mobile,
         'password'=>Hash::make($request->password),

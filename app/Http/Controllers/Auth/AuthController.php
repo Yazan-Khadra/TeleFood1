@@ -56,6 +56,12 @@ class AuthController extends Controller{
        return $this->JsonResponse('Registration done successfully',201);
     }
     public function Login(Request $request){
+        if($request->mobile=="null"){
+            return $this->JsonResponse("the mobile field is required ",400);
+        }
+        else if($request->password=="null"){
+            return $this->JsonResponse("the password field is required",400);
+        }
         $validation= Validator::make($request->all(),[
             'mobile'=>'required|min:10|max:10|regex:/[0-9]{10}/',
             'password'=>'required',

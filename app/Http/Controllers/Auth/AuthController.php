@@ -18,17 +18,42 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 class AuthController extends Controller{
  use JsonResponseTrait;
     public function Register(Request $request){
+        if($request->first_name=="null"){
+            return $this->JsonResponse("First name field can't be null",400);
+        }
+        if($request->last_name=="null"){
+            return $this->JsonResponse("Last name field can't be null",400);
+        }
+        if($request->location=="null"){
+            return $this->JsonResponse("location field can't be null",400);
+        }
+        if($request->location_details=="null"){
+            return $this->JsonResponse("location details field can't be null",400);
+        }
+        if($request->image=="null"){
+            return $this->JsonResponse("Image field can't be null",400);
+        }
+        if($request->mobile=="null"){
+            return $this->JsonResponse("mobile phone Field can't be null",400);
+        }
+        if($request->password=="null"){
+            return $this->JsonResponse("password Field can't be null",400);
+        }
+        if($request->confirm_password=="null"){
+            return $this->JsonResponse("confirm password Field can't be null",400);
+        }
         try{
        $validation= Validator::make($request->all(),[
-        'first_name'=>'required|string',
-        'last_name'=>'required|string',
-        'location'=>'required|string',
-        'location_details'=>'required|string',
-        'mobile'=>'required|min:10|max:10|unique:users',
-        'password'=>'required|min:6|max:255',
-        'confirm_password'=>'required|same:password'
-
+        'first_name'=>'string',
+        'last_name'=>'string',
+        'location'=>'string',
+        'location_details'=>'string',
+        'image'=>'image',
+        'mobile'=>'min:10|max:10|unique:users',
+        'password'=>'min:6|max:255',
+        'confirm_password'=>'same:password'
        ]);
+       
 
        $image_url="https://w7.pngwing.com/pngs/577/307/png-transparent-human-with-circle-logo-national-cyber-security-alliance-organization-drupal-association-information-internet-icon-s-customers-free-miscellaneous-company-logo.png";
        if($validation->fails()){
@@ -59,14 +84,14 @@ class AuthController extends Controller{
     }
     public function Login(Request $request){
         if($request->mobile=="null"){
-            return $this->JsonResponse("the mobile field is required ",400);
+            return $this->JsonResponse("the mobile field is  ",400);
         }
         else if($request->password=="null"){
-            return $this->JsonResponse("the password field is required",400);
+            return $this->JsonResponse("the password field is ",400);
         }
         $validation= Validator::make($request->all(),[
-            'mobile'=>'required|min:10|max:10|regex:/[0-9]{10}/',
-            'password'=>'required',
+            'mobile'=>'min:10max:10regex:/[0-9]{10}/',
+            'password'=>'',
         ]);
         if($validation->fails()){
             return $this->JsonResponse($validation->errors(),400);

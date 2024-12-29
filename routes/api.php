@@ -38,12 +38,12 @@ Route::controller(FavoriteController::class)->group(function(){
     Route::delete('favorite/delete/{name}','deleteProduct')->middleware('Token');
 });
 Route::controller(CategoryController::class)->group(function(){
-    Route::post('category/add','AddCategory')->middleware('Token');
-    Route::get('category/showStore/{type}','showStoreBy')->middleware('Token');
+    Route::post('category/add','AddCategory');
+    Route::get('category/showStore/{type}','showStoreBy');
 });
     Route::controller(StoreController::class)->group(function(){
-        Route::post('store/create','Create')->middleware(['Token']);
-        Route::post('store/addbranch','AddBranch')->middleware(['Token']);
+        Route::post('store/create','Create');
+        Route::post('store/addbranch','AddBranch');
         Route::post('store/delete/branch','DeleteBranch');
         Route::delete('store/delete/{name}','Delete');
         Route::get('stores/get','Index');
@@ -52,7 +52,7 @@ Route::controller(CategoryController::class)->group(function(){
 
 });
 Route::controller(ProductController::class)->group(function(){
-Route::post('product/add','Create')->middleware(['Token']);
+Route::post('product/add','Create');
 Route::post('product/delete','Delete');
 Route::delete('delete/all/{name}','DeleteAllForStore');
 });

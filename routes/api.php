@@ -39,7 +39,8 @@ Route::controller(FavoriteController::class)->group(function(){
 });
 Route::controller(CategoryController::class)->group(function(){
     Route::post('category/add','AddCategory');
-    Route::get('category/showStore/{type}','showStoreBy');
+    Route::get('category/showStore/{type}','showStoreByCategory');
+    Route::get('category/get','Index');
 });
     Route::controller(StoreController::class)->group(function(){
         Route::post('store/create','Create');

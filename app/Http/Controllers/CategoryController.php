@@ -25,7 +25,11 @@ class CategoryController extends Controller
         ]);
             return $this->JsonResponse('Added one new category',201);
     }
-    public function showStoreBy($type){
+    public function Index(){
+       $categories=Category::all();
+        return CategoryResource::collection($categories);
+    }
+    public function showStoreByCategory($type){
         $category=Category::where('type',$type)->get()->first();
         $categoryStore= $category->stores;
         if(!isset($categoryStore)){

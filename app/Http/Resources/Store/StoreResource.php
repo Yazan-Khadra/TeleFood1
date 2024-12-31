@@ -15,6 +15,7 @@ class StoreResource extends JsonResource
     public function toArray(Request $request): array
     {
         $locations=[];
+        $category=$this->Category->type;
         $i=0;
         foreach($this->Location as $location){
             $locations[$i]=['governorate'=>$location->Governorate->name,'location'=>$location->location];
@@ -26,7 +27,9 @@ class StoreResource extends JsonResource
             'description'=>$this->description,
             'rate'=>$this->rate,
             'image_url'=>$this->image_url,
+            'category'=>$category,
             'locations'=>$locations,
+    
             
         ];
     }

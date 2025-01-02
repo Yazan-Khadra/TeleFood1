@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('image_url');
+            $table->binary('image_url');
             $table->string('location');
             $table->string('location_details');
             $table->string('role')->default('user');

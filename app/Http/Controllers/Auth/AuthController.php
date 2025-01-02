@@ -48,7 +48,7 @@ class AuthController extends Controller{
         'last_name'=>'string',
         'location'=>'string',
         'location_details'=>'string',
-        'image'=>'image',
+        'image'=>'string',
         'mobile'=>'min:10|max:10|unique:users',
         'password'=>'min:6|max:255',
         'confirm_password'=>'same:password'
@@ -60,9 +60,7 @@ class AuthController extends Controller{
         return $this->JsonResponse($validation->errors(),400);
        }
        if(isset($request->image)){
-        $image_url=$request->file("image")->getClientOriginalName();
-        $path=$request->file('image')->storeAs('UsersImage', $image_url,'TeleFood');
-       
+        $image_url=$request->image;
        }
 
 
@@ -71,7 +69,7 @@ class AuthController extends Controller{
         'last_name'=>$request->last_name,
         'location'=>$request->location,
         'location_details'=>$request->location_details,
-        'image_url'=>$path,
+        'image_url'=>$image_url,
         'mobile'=>$request->mobile,
         'password'=>Hash::make($request->password),
         'fcm_token'=> $request->fcmToken,

@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('baskets', function (Blueprint $table) {
             $table->id();
-            $table->string('size');
             $table->string('description');
             $table->string('quantity');
             $table->string('total_price');

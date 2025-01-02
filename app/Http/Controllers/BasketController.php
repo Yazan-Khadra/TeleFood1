@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Traits\JsonResponseTrait;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Basket;
+use App\Models\Product;
 use App\Http\Resources\basket\BasketResource;
 use App\Http\Resources\basket\BasketIndexResource;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +14,10 @@ use Illuminate\Support\Facades\Auth;
 class BasketController extends Controller
 {
     use JsonResponseTrait;
-
+    public function CalculatePrice($quantity,$Productprice){
+        $price=$quantity*$Productprice;
+        return $price;
+    }
     public function ShowBasketProducts(){
         $user=Auth::user();
         $userProducts=$user->baskets;
@@ -29,75 +33,67 @@ class BasketController extends Controller
 
     public function store(Request $request){
         $validateBasketData=Validator::make($request->all(),[
-            'product_id'=>'required|string',
-            'size'=>'required|string',
+            'product_id'=>'required|string|unique:baskets',
             'quantity'=>'required|string',
             'description'=>'required|string',
-            'total_price'=>'required|numeric',
             'location'=>'required|string'
         ]);
         if($validateBasketData->fails()){
             return $this->JsonResponse($validateBasketData->errors(),400);
         }
         $user=Auth::user()->id;
+        
+        $productinfo=Product::where('id',$request->product_id)->get()->first();
+        $productPrice=$this->CalculatePrice($request->quantity,$productinfo->price);
         Basket::create([
             'user_id'=>$user,
             'product_id'=>$request->product_id,
-            'size'=>$request->size,
             'quantity'=>$request->quantity,
             'description'=>$request->description,
-            'total_price'=>$request->total_price,
-            'location'=>$request->location
+            'total_price'=>$productPrice,
+            'location'=>$request->location,
         ]);
             return $this->JsonResponse('Added to Cart Succsesfully',201);
     }
-    public function edit(Request $request){
-        $validateEditData=validator::make($request->all(),[
-            'product_id'=>'required',
+    public function delete($cartId){
+        $user=Auth::user();
+        Basket::where('id',$cartId)->delete();
+        return $this->JsonResponse('order canceled successfully',200);
+    }
+    public function Update(Request $request){
+        $user=Auth::user();
+        $validateBasketData=Validator::make($request->all(),[
             'quantity'=>'required|string',
             'description'=>'required|string',
-            'location'=>'required|string' ]);
-            if($validateEditData->fails()){
-                return $this->JsonResponse($validateEditData->errors(),400);
-            }
-            $user=Auth::user()->id;
-            $userBasket=$user->baskets();
-            $userProduct=$userBasket->products->where('id',$request->product_id);
-            if(!$userProduct){
-                 return $this->JsonResponse('Updating failed',400);
-            }
-            $userProduct->update([
+            'location'=>'required|string'
+        ]);
+        if($validateBasketData->fails()){
+            return $this->JsonResponse($validateBasketData->errors(),400);
+        }
+        $basketInfo= Basket::where('id',$request->cartId)->get()->first();
+        if($request->quantity!=$basketInfo->quantity){
+            $price=$basketInfo->products->price;
+            $newPrice=$this->CalculatePrice($request->quantity,$price);
+            Basket::where('id',$request->cartId)->update([
                 'quantity'=>$request->quantity,
                 'description'=>$request->description,
-                'location'=>$request->location
+                'total_price'=>$newPrice,
+                'location'=>$request->location,
+                
             ]);
-                 return $this->JsonResponse('Updated Succsesfully',202);
-
-    }
-    public function delete(Request $request){
-
-            $user=Auth::user();
-            $userBasket=$user->baskets;
-            $userProduct=$userBasket->products->where('id',$request->product_id);
-            if(!$userProduct){
-                return $this->JsonResponse('Product Not Found',400);
-            }
-            $userProduct->delete();
-            if(isset($userProduct)){
-                return $this->JsonResponse('Deleted sucessfully',200);
-            }
-            return $this->JsonResponse('Deleting failed',400);
-    }
-    public function deleteAll(){
-        $user=Auth::user();
-        $basketAllProducts=$user->baskets;
-        if(!isset($basketAllProducts)){
-            return $this->JsonResponse('there is no product in the basket to delete',404);
         }
-        $deleteBasket=$basketAllProducts->delete();
-        if(isset($deleteBasket)){
-            return $this->JsonResponse('All product deleted from the basket',200);
+        else{
+            Basket::where('id',$request->cartId)->update([
+                'quantity'=>$request->quantity,
+                'description'=>$request->description,
+                'location'=>$request->location,
+            ]);
+           
+            
         }
+       
+        return $this->JsonResponse('order canceled successfully',200);
 
     }
+ 
 }

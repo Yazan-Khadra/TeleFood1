@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Traits\JsonResponseTrait;
 use Illuminate\Http\Request;
@@ -24,8 +25,8 @@ class UserController extends Controller{
         } catch (JWTException $e) {
             return $this->JsonResponse('invalid token',400);
         }
-
-        return response()->json(compact('user'));
+        $user=Auth::user();
+        return UserResource::make($user);
 }
 public function UpdateName(Request $request){
     $validation=Validator::make($request->all(),[

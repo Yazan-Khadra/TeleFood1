@@ -33,7 +33,7 @@ class BasketController extends Controller
 
     public function store(Request $request){
         $validateBasketData=Validator::make($request->all(),[
-            'product_id'=>'required|string|unique:baskets',
+            'product_id'=>'required|string',
             'quantity'=>'required|string',
             'description'=>'required|string',
             'location'=>'required|string'
@@ -55,7 +55,7 @@ class BasketController extends Controller
         ]);
             return $this->JsonResponse('Added to Cart Succsesfully',201);
     }
-    public function delete($cartId){
+    public function Delete($cartId){
         $user=Auth::user();
         Basket::where('id',$cartId)->delete();
         return $this->JsonResponse('order canceled successfully',200);
@@ -91,8 +91,7 @@ class BasketController extends Controller
            
             
         }
-       
-        return $this->JsonResponse('order canceled successfully',200);
+        return $this->JsonResponse('order Updated successfully',200);
 
     }
  

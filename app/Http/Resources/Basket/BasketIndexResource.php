@@ -16,11 +16,12 @@ class BasketIndexResource extends JsonResource
     {
         $userProducts=$this->products;
         return [
-            'cart_id'=>$this->id,
-            'product_id'=>$userProducts->id,
+                'cart_id'=>$this->id,
+                'product_id'=>$userProducts->id,
                 'name'=>$userProducts->name,
                 'description'=>$this->description,
                 'quantity'=>$this->quantity,
+                'location'=>$this->location,
                 'image_url'=>$userProducts->image_url,
                 'total price'=>$this->total_price,
             ];

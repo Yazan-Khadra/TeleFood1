@@ -28,7 +28,8 @@ Route::controller(UserController::class)->group(function(){
 Route::controller(BasketController::class)->group(function(){
     Route::get('basket/index','ShowBasketProducts')->middleware(['Token']);
     Route::post('basket/store','store')->middleware('Token');
-    Route::post('basket/edit/{name}','edit')->middleware('Token');
+    Route::post('basket/update','Update')->middleware('Token');
+    Route::delete('basket/delete/{cartId}','Delete')->middleware('Token');
     Route::delete('basket/delete/{name}','delete')->middleware('Token');
     Route::delete('basket/deleteAll','deleteAll')->middleware('Token');
     });

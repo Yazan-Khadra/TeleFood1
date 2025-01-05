@@ -78,7 +78,10 @@ class AuthController extends Controller{
     catch(Exception $e){
         return $this->JsonResponse($e,400);
     }
-       return $this->JsonResponse('Registration done successfully',201);
+     $credintials=$request->only('mobile','password');
+      $token=JWTAuth::attempt($credintials);
+      $response=['response'=>'Registration done successfully','token'=>$token];
+       return $this->JsonResponse($response,201);
     }
     public function Login(Request $request){
         if($request->mobile=="null"){

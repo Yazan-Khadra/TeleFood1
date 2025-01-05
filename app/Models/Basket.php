@@ -13,12 +13,14 @@ class Basket extends Model
         'description',
         'quantity',
         'total_price',
-        'location'
     ];
     public function products(){
         return $this->belongsTo(Product::class,'product_id');
     }
     public function users(){
         return $this->belongsTo(User::class);
+    }
+    public function Orders(){
+        return $this->hasMany(Order::class,'cart_id');
     }
 }

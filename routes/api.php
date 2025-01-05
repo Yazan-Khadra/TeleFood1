@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SearchBarController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\User\UserController;
@@ -32,6 +34,7 @@ Route::controller(BasketController::class)->group(function(){
     Route::delete('basket/delete/{cartId}','Delete')->middleware('Token');
     Route::delete('basket/delete/{name}','delete')->middleware('Token');
     Route::delete('basket/deleteAll','deleteAll')->middleware('Token');
+
     });
 Route::controller(FavoriteController::class)->group(function(){
     Route::post('favorite/add','store')->middleware('Token');
@@ -61,4 +64,10 @@ Route::delete('delete/all/{name}','DeleteAllForStore');
 });
 Route::controller(SearchBarController::class)->group(function(){
 Route::get('search/{name}',"Search");
+});
+Route::controller(PaymentsController::class)->group(function(){
+    Route::post('checkout','Checkout')->middleware(['Token']);
+});
+Route::controller(OrderController::class)->group(function(){
+    Route::get('orders','Index')->middleware('Token');
 });

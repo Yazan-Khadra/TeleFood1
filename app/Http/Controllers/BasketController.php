@@ -36,7 +36,6 @@ class BasketController extends Controller
             'product_id'=>'required|string',
             'quantity'=>'required|string',
             'description'=>'required|string',
-            'location'=>'required|string'
         ]);
         if($validateBasketData->fails()){
             return $this->JsonResponse($validateBasketData->errors(),400);
@@ -51,7 +50,6 @@ class BasketController extends Controller
             'quantity'=>$request->quantity,
             'description'=>$request->description,
             'total_price'=>$productPrice,
-            'location'=>$request->location,
         ]);
             return $this->JsonResponse('Added to Cart Succsesfully',201);
     }
@@ -65,7 +63,6 @@ class BasketController extends Controller
         $validateBasketData=Validator::make($request->all(),[
             'quantity'=>'required|string',
             'description'=>'required|string',
-            'location'=>'required|string'
         ]);
         if($validateBasketData->fails()){
             return $this->JsonResponse($validateBasketData->errors(),400);
@@ -78,7 +75,6 @@ class BasketController extends Controller
                 'quantity'=>$request->quantity,
                 'description'=>$request->description,
                 'total_price'=>$newPrice,
-                'location'=>$request->location,
                 
             ]);
         }
@@ -86,7 +82,6 @@ class BasketController extends Controller
             Basket::where('id',$request->cartId)->update([
                 'quantity'=>$request->quantity,
                 'description'=>$request->description,
-                'location'=>$request->location,
             ]);
            
             

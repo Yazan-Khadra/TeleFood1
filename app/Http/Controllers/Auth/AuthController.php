@@ -49,7 +49,7 @@ class AuthController extends Controller{
         'location'=>'string',
         'location_details'=>'string',
         'image'=>'string',
-        'mobile'=>'min:10|max:10|unique:users',
+        'mobile'=>'min:10|max:10|unique:users|regex:/^09/',
         'password'=>'min:6|max:255',
         'confirm_password'=>'same:password'
        ]);
@@ -91,7 +91,7 @@ class AuthController extends Controller{
             return $this->JsonResponse("the password field is required ",400);
         }
         $validation= Validator::make($request->all(),[
-            'mobile'=>'min:10|max:10|regex:/[0-9]{10}/',
+            'mobile'=>'min:10|max:10|regex:/^09\d{8}$/',
         ]);
         if($validation->fails()){
             return $this->JsonResponse($validation->errors(),400);

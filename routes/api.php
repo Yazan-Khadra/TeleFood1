@@ -37,9 +37,9 @@ Route::controller(BasketController::class)->group(function(){
 
     });
 Route::controller(FavoriteController::class)->group(function(){
-    Route::post('favorite/add','store')->middleware('Token');
-    Route::get('favorite/index','ShowFavoritePage')->middleware('Token');
-    Route::delete('favorite/delete/{name}','deleteProduct')->middleware('Token');
+    Route::post('favorite/add','AddToFavorite')->middleware('Token');
+    Route::get('favorite/index','Index')->middleware('Token');
+    Route::delete('favorite/delete/{product_id}','Delete')->middleware('Token');
 });
 Route::controller(CategoryController::class)->group(function(){
     Route::post('category/add','AddCategory');

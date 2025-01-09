@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\DashBoardController;
 use App\Models\User;
 
 use App\Traits\JsonResponseTrait;
@@ -81,6 +82,8 @@ class AuthController extends Controller{
      $credintials=$request->only('mobile','password');
       $token=JWTAuth::attempt($credintials);
       $response=['response'=>'Registration done successfully','token'=>$token];
+     $addUser=new DashBoardController();
+     $addUser->AddUser();
        return $this->JsonResponse($response,201);
     }
     public function Login(Request $request){

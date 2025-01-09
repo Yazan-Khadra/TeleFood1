@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\ProductController;
@@ -71,3 +72,11 @@ Route::controller(PaymentsController::class)->group(function(){
 Route::controller(OrderController::class)->group(function(){
     Route::get('orders','Index')->middleware('Token');
 });
+Route::controller(DashBoardController::class)->group(function(){
+    Route::get('usersNum/get','GetNumberOFUsers');
+    Route::get('storesNum/get','GetStoresNumber');
+    Route::get('get/admins','GetAdmins');
+    Route::get('orders/number/get','GetOrdersNumber');
+    Route::get('returns','GetReturns');
+});
+

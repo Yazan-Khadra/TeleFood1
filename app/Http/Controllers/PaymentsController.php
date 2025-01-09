@@ -23,12 +23,16 @@ class PaymentsController extends Controller{
         if($deafultPayId==$request->payId){
             $user_id=$user->id;
             $cart_id=$request->cartId;
-            Order::create([
+            $order=Order::create([
                 'user_id'=>$user_id,
                 'cart_id'=>$cart_id,
                 'location'=>$request->location,
             ]);
-            return $this->JsonResponse('Your Purchase was completed successfully',200);
+            $addOrder=new DashBoardController();
+            $addOrder->AddOrder();
+            $total_price=$order->Basket->total_price;
+            $addOrder->AddToReturns($total_price);
+            return $this->JsonResponse('Your Purchase completed successfully',200);
         }
         else{
             return $this->JsonResponse('invalid Payment Id',400);

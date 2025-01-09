@@ -31,7 +31,8 @@ class StoreController extends Controller{
             return $this->JsonResponse($validation->errors(),400);
         }
         $this->AddStore($request);
-     
+        $storeCount=new DashBoardController();
+        $storeCount->AddStore();
         return $this->JsonResponse('Store add Successfully',200);
     }
     public function AddBranch(Request $request){

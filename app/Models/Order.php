@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model{
     protected $fillable=[
         'location',
-        'cart_id',
-        'user_id'
+        'order_id',
+        'driver_id',
+        'user_id',
+        'arrivial_time',
     ];
-    public function Basket(){
-        return $this->belongsTo(Basket::class,'cart_id');
-    }
+   public function Driver(){
+    return $this->belongsTo(Driver::class,'driver_id');
+   }
 }

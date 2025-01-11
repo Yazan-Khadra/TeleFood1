@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Basket;
 use App\Models\Order;
 use App\Traits\JsonResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Faker\Generator as Faker;
 
 class PaymentsController extends Controller{
     use JsonResponseTrait;
@@ -22,16 +24,28 @@ class PaymentsController extends Controller{
         $user=Auth::user();
         if($deafultPayId==$request->payId){
             $user_id=$user->id;
-            $cart_id=$request->cartId;
-            $order=Order::create([
-                'user_id'=>$user_id,
-                'cart_id'=>$cart_id,
-                'location'=>$request->location,
-            ]);
+
+            $confirm_cart=Basket::where('user_id',$user_id)->get();
             $addOrder=new DashBoardController();
+            $faker=new Faker();
+            $randomNumber=$faker->numberBetween(1,3);
+            
+            foreach($confirm_cart as $item){
+           Order::create([
+            'location'=>$request->location,
+            'user_id'=>$user_id,
+            'order_id'=>$item->id,
+            'driver_id'=>$randomNumber,
+           ]);
             $addOrder->AddOrder();
-            $total_price=$order->Basket->total_price;
-            $addOrder->AddToReturns($total_price);
+            // $total_price=$order->Basket->total_price;
+            $addOrder->AddToReturns(12000);
+        }
+        if(isset($request->tips)){
+            $addOrder->AddToTips($request->tips);
+        }
+        $deleteFromCart=new BasketController();
+        $deleteFromCart->DeleteAll();
             return $this->JsonResponse('Your Purchase completed successfully',200);
         }
         else{

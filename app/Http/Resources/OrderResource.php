@@ -15,14 +15,13 @@ class OrderResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $cartInfo=$this->Basket;
-        $productInfo=$cartInfo->products;
+        $driver_info=$this->Driver;
         return [
-            'product_name'=>$productInfo->name,
-            'desctiption'=>$cartInfo->description,
-            'quantity'=>$cartInfo->quantity,
-            'totalprice'=>$cartInfo->total_price,
             'location'=>$this->location,
+            'driver_name'=>$driver_info->driver_name,
+            'motorcycle_number'=>$driver_info->motorcycle_number,
+            'order_id'=>$this->order_id,
+            'time to arrive'=>$this->arrivial_time,
         ];
     }
 }

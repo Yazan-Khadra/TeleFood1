@@ -50,4 +50,13 @@ class DashBoardController extends Controller{
         $returns=Cache::get('returns');
         return $this->JsonResponse($returns,200);
     }
+    public function AddToTips($ammount){
+        $cacheTips=Cache::get('tips');
+        $Tips=$cacheTips+$ammount;
+        Cache::put('tips',$Tips);
+    }
+    public function GetTips(){
+        $tips=Cache::get('tips');
+        return $this->JsonResponse($tips,200);
+    }
 }

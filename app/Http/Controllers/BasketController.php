@@ -58,6 +58,10 @@ class BasketController extends Controller
         Basket::where('id',$cartId)->delete();
         return $this->JsonResponse('order canceled successfully',200);
     }
+    public function DeleteAll(){
+        $user_id=Auth::user()->id;
+        Basket::where('user_id',$user_id)->delete();
+    }
     public function Update(Request $request){
         $user=Auth::user();
         $validateBasketData=Validator::make($request->all(),[

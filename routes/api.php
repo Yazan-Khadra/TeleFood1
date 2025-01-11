@@ -78,5 +78,6 @@ Route::controller(DashBoardController::class)->group(function(){
     Route::get('get/admins','GetAdmins');
     Route::get('orders/number/get','GetOrdersNumber');
     Route::get('returns','GetReturns');
+    Route::get('get/tips','GetTips');
 });
 

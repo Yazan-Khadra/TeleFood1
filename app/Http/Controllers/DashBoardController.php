@@ -7,6 +7,7 @@ use App\Traits\JsonResponseTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class DashBoardController extends Controller{
     use JsonResponseTrait;
@@ -59,4 +60,15 @@ class DashBoardController extends Controller{
         $tips=Cache::get('tips');
         return $this->JsonResponse($tips,200);
     }
+    
+    public function ShowNotification(){
+        $user=Auth::user();
+            $UnreadNotification=[];
+            $i=0;
+            foreach($user->unreadNotifications as $notification){
+                $UnreadNotification[$i]=['title'=>$notification->data['title'],'message'=>$notification->data['message']];
+                $i++;
+            }
+            return $this->JsonResponse($UnreadNotification,200);
+       }
 }

@@ -10,4 +10,7 @@ class Driver extends Model
         'driver_name',
         'motoarcycle_number',
     ];
+    public function Orders(){
+        return $this->hasMany(Order::class,'driver_id');
+    }
 }

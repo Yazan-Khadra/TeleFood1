@@ -27,15 +27,15 @@ class PaymentsController extends Controller{
 
             $confirm_cart=Basket::where('user_id',$user_id)->get();
             $addOrder=new DashBoardController();
-            $faker=new Faker();
-            $randomNumber=$faker->numberBetween(1,3);
+            // $faker=new Faker();
+            // $randomNumber=$faker->numberBetween(1,3);
             
             foreach($confirm_cart as $item){
            Order::create([
             'location'=>$request->location,
             'user_id'=>$user_id,
             'order_id'=>$item->id,
-            'driver_id'=>$randomNumber,
+            'driver_id'=>1,
            ]);
             $addOrder->AddOrder();
             // $total_price=$order->Basket->total_price;

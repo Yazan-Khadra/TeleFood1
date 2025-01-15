@@ -95,4 +95,14 @@ public function UpdatePassword(Request $request){
         return $this->JsonResponse('password updated Successfully',201);
     }
 }
+public function ShowNotification(){
+    $user=Auth::user();
+            $UnreadNotification=[];
+            $i=0;
+            foreach($user->unreadNotifications as $notification){
+                $UnreadNotification[$i]=['title'=>$notification->data['title'],'message'=>$notification->data['message']];
+                $i++;
+            }
+            return $this->JsonResponse($UnreadNotification,200);
+}
 }

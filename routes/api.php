@@ -7,6 +7,7 @@ use App\Http\Controllers\PaymentsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DriverController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SearchBarController;
 use App\Http\Controllers\StoreController;
@@ -26,6 +27,7 @@ Route::middleware('Token')->group(function(){
 Route::controller(UserController::class)->group(function(){
     Route::middleware('Token')->group(function(){
     Route::get('UserInfo','getUserInfo');
+    Route::get('notification/user','ShowNotification')->middleware('Token');
     });
 });
 Route::controller(BasketController::class)->group(function(){
@@ -71,6 +73,7 @@ Route::controller(PaymentsController::class)->group(function(){
 });
 Route::controller(OrderController::class)->group(function(){
     Route::get('orders','Index')->middleware('Token');
+    Route::get('done/user/{order_id}','Done')->middleware('Token');
 });
 Route::controller(DashBoardController::class)->group(function(){
     Route::get('usersNum/get','GetNumberOFUsers');
@@ -79,5 +82,9 @@ Route::controller(DashBoardController::class)->group(function(){
     Route::get('orders/number/get','GetOrdersNumber');
     Route::get('returns','GetReturns');
     Route::get('get/tips','GetTips');
+    Route::get('show/Admin/Notification','ShowNotification')->middleware('Token');
 });
-
+Route::controller(DriverController::class)->group(function(){
+Route::get('driver/orders/{driver_id}','GetOrders');
+Route::get('driver/done/{order_id}','Done');
+});

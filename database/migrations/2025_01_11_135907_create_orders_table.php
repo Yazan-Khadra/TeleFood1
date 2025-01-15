@@ -16,6 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->foreignId('driver_id')->references('id')->on('drivers')->cascadeOnDelete();
             $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreignId('cart_id')->references('id')->on('baskets')->cascadeOnDelete();
             $table->string('order_id');
             $table->string('arrivial_time')->default(15.00);
             $table->string('location');

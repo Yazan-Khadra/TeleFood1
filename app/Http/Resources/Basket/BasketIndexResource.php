@@ -21,7 +21,6 @@ class BasketIndexResource extends JsonResource
                 'name'=>$userProducts->name,
                 'description'=>$this->description,
                 'quantity'=>$this->quantity,
-                'location'=>$this->location,
                 'image_url'=>$userProducts->image_url,
                 'total price'=>$this->total_price,
             ];

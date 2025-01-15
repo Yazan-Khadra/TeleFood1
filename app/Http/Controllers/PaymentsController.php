@@ -30,11 +30,13 @@ class PaymentsController extends Controller{
             // $faker=new Faker();
             // $randomNumber=$faker->numberBetween(1,3);
             
+            
             foreach($confirm_cart as $item){
            Order::create([
             'location'=>$request->location,
             'user_id'=>$user_id,
             'order_id'=>$item->id,
+            'cart_id'=>$item->id,
             'driver_id'=>1,
            ]);
             $addOrder->AddOrder();
@@ -44,8 +46,7 @@ class PaymentsController extends Controller{
         if(isset($request->tips)){
             $addOrder->AddToTips($request->tips);
         }
-        $deleteFromCart=new BasketController();
-        $deleteFromCart->DeleteAll();
+       
             return $this->JsonResponse('Your Purchase completed successfully',200);
         }
         else{
